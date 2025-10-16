@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BMI Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .form-group {
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            border-left: 5px solid;
+        }
+        
+        .underweight { border-color: #ffc107; background: #fff3cd; }
+        .normal { border-color: #28a745; background: #d4edda; }
+        .overweight { border-color: #fd7e14; background: #ffe5d0; }
+        .obese { border-color: #dc3545; background: #f8d7da; }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 5px solid #dc3545;
+        }
+        
+        .bmi-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .category {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧮 BMI Calculator</h1>
+        <p class="subtitle">Check your Body Mass Index and health category</p>
+        
+        <form method="POST" action="/calculate">
+            <div class="form-group">
+                <label for="height">📏 Height (cm):</label>
+                <input type="number" id="height" name="height" step="0.1" placeholder="Enter height in cm" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="weight">⚖️ Weight (kg):</label>
+                <input type="number" id="weight" name="weight" step="0.1" placeholder="Enter weight in kg" required>
+            </div>
+            
+            <button type="submit">🎯 Calculate BMI</button>
+        </form>
+
+        {% if bmi %}
+        <div class="result {{ category.lower() }}">
+            <h3>Your Results:</h3>
+            <div class="bmi-value">{{ bmi }}</div>
+            <div class="category">{{ category }}</div>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #666;">
+                {% if category == "Underweight" %}
+                💡 Consider consulting a nutritionist for healthy weight gain.
+                {% elif category == "Normal" %}
+                ✅ Great! Maintain your healthy lifestyle.
+                {% elif category == "Overweight" %}
+                ⚠️ Consider regular exercise and balanced diet.
+                {% else %}
+                🚨 Consult a healthcare provider for guidance.
+                {% endif %}
+            </p>
+        </div>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">
+            <strong>❌ Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

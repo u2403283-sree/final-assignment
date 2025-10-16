@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>✅ To-Do List</h1>
+        
+        <div class="task-counter">
+            {{ tasks|length }} task{% if tasks|length != 1 %}s{% endif %}
+        </div>
+        
+        <form method="POST" action="/add">
+            <div class="form-group">
+                <input type="text" name="task" placeholder="✏️ Enter a new task..." required>
+                <button type="submit" class="add-btn">Add Task</button>
+            </div>
+        </form>
+
+        <ul class="task-list">
+            {% if tasks %}
+                {% for task in tasks %}
+                <li {% if loop.last %}class="new-task"{% endif %}>
+                    <span>{{ task }}</span>
+                    <a href="{{ url_for('delete_task', task_id=loop.index0) }}" class="delete-btn">
+                        🗑️ Delete
+                    </a>
+                </li>
+                {% endfor %}
+            {% else %}
+                <div class="empty-message">
+                    No tasks yet. Add your first task above! 🚀
+                </div>
+            {% endif %}
+        </ul>
+    </div>
+
+    <script>
+        // Auto-focus on input field
+        document.addEventListener('DOMContentLoaded', function() {
+            const input = document.querySelector('input[name="task"]');
+            if (input) input.focus();
+        });
+    </script>
+</body>
+</html>
